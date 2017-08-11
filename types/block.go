@@ -12,7 +12,8 @@ type Block struct {
 
 type BlockHeader struct {
 	PrevBlock Hash
-	MerkleRoot Hash //Merkel hash of all transactions in this block
+	TransactionsRoot Hash //Merkle hash of all transactions in this block
+	StateRoot Hash//Merkle hash of all transactions in this block
 	Nonce uint32
 }
 
@@ -32,7 +33,7 @@ func (block Block) IsValid() bool{
 	if block.Header.generateHash() != block.Hash {
 		return false
 	}
-	if GenerateMerkleRoot(block.Transactions) != block.Header.MerkleRoot {
+	if GenerateMerkleRoot(block.Transactions) != block.Header.TransactionsRoot {
 		return false
 	}
 	return true
@@ -52,3 +53,12 @@ func (block Block) Serialize() ([]byte, error){
 func (block *Block) Deserialize(data []byte) error {
 	return json.Unmarshal(data, block)
 }
+
+
+func GetGenesis() Block {
+	block := Block{Header: BlockHeader{}}
+
+	block.Hash = block.Header.generateHash()
+	return block
+}
+

@@ -10,19 +10,10 @@ type Transaction struct {
 }
 
 type TransactionHeader struct {
-	Inputs []Input//amount difference can be claimed as fee
-	Outputs []Output
-
-}
-
-type Output struct {
-	Address Hash
+	Sender Hash
+	Receiver Hash
 	Amount uint32
-}
-
-type Input struct {
-	Address Hash
-	Amount uint32
+	Fee uint32
 }
 
 func (transaction Transaction) generateHash() Hash {
